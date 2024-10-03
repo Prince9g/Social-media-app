@@ -39,13 +39,13 @@ export const addNewPost = async(req, res) => {
 }
 export const getAllPost = async (req, res) => {
     try{
-        const posts = await Post.find().sort({createdAt:-1}).populate({path:'author', select:'username, profilePicture'})
+        const posts = await Post.find().sort({createdAt:-1}).populate({path:'author', select:'username profilePicture'})
         .populate({
             path:'comments',
             sort:{createdAt:-1},
             populate:({
                 path:'author',
-                select:'username, profilePicture'
+                select:'username profilePicture'
             })
         });
         return res.status(200).json({
@@ -62,13 +62,13 @@ export const getUserPost = async (req,res) => {
         const authorId = req.id;
         const posts = await Post.find({author:authorId}).sort({createdAt:-1}).populate({
             path:'author',
-            select:'username, profilePicture'
+            select:'username profilePicture'
         }).populate({
             path:'comments',
             sort:{createdAt:-1},
             populate:({
                 path:'author',
-                select:'username, profilePicture'
+                select:'username profilePicture'
             })
         });
         return res.status(200).json({
@@ -90,7 +90,7 @@ export const likePost = async (req, res) => {
             success:false
         })
         //like logic started
-        await post.updateOne({$addToset:{likes:likeKrneWala}});
+        await post.updateOne({$addToSet:{likes:likeKrneWala}});
         await post.save();
 
         //implementing socked io for real time notification
