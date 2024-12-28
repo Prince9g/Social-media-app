@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import useGetUserProfile from "@/hooks/useGetUserProfile";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { Button } from "./ui/button";
 import { Badge } from "./ui/badge";
@@ -47,12 +47,14 @@ const Profile = () => {
                 <span>{userProfile?.username}</span>
                 {isLoggedInUserProfile ? (
                   <>
-                    <Button
+                  <Link to="/account/edit">
+                  <Button
                       variant="secondary"
                       className="hover:bg-gray-200 h-8"
                     >
                       Edit Profile
                     </Button>
+                    </Link>
                     <Button
                       variant="secondary"
                       className="hover:bg-gray-200 h-8"
