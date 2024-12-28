@@ -15,6 +15,7 @@ import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { setAuthUser } from "@/redux/authSlice";
 import CreatePost from "./CreatePost";
+import { setPosts, setSelectedPost } from "@/redux/postSlice";
 
 const LeftSideBar = () => {
     const navigate = useNavigate();
@@ -26,9 +27,11 @@ const LeftSideBar = () => {
             const res = await axios.get('http://localhost:8080/api/v1/user/logout', {withCredentials:true});
             console.log(res);
             if(res.data.success){
-                dispatch(setAuthUser(null));
-                navigate('/login');
-                toast.success(res.data.message);
+              dispatch(setAuthUser(null));
+              dispatch(setSelectedPost(null));
+              dispatch(setPosts([]));
+              navigate('/login');
+              toast.success(res.data.message);
             }
         } catch (error) {
             toast.error(error.response.data.message);
@@ -39,6 +42,8 @@ const LeftSideBar = () => {
             logoutHandler();
         } else if(textType === 'Create'){
             setOpen(true);
+        } else if(textType === 'Profile'){
+            navigate(`/profile/${user?._id}`);
         }
     }
 

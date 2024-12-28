@@ -14,7 +14,7 @@ import postSlice from "./postSlice";
 
 
 const persistConfig = {
-  key: "1",
+  key: "root",
   version: 1,
   storage,
 };
