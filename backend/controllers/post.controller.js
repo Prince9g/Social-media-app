@@ -3,7 +3,7 @@ import cloudinary from "../utils/cloudinary.js";
 import {Post} from '../models/post.model.js'
 import { User } from "../models/user.model.js";
 import { Comment } from "../models/comment.model.js";
-import { getRecieverSocketId } from "../socket/socket.js";
+import { getRecieverSocketId, io } from "../socket/socket.js";
 export const addNewPost = async(req, res) => {
     try{
         const {caption} = req.body;
@@ -237,12 +237,12 @@ export const bookmarkPost = async (req, res) => {
         const user = await User.findById(authorId);
         if(user.bookmarks.includes(post._id)){
             //already bookmarked ->remove from it
-            await user.upadateOne({$pull:{bookmarks:post._id}});
+            await user.updateOne({$pull:{bookmarks:post._id}});
             await user.save();
             return res.status(200).json({type:'unsaved', message:'post removed successfully', success:true});
         }else{
             //have to bookmark
-            await user.upadateOne({$addToset:{bookmarks:post._id}});
+            await user.updateOne({$addToSet:{bookmarks:post._id}});
             await user.save();
             return res.status(200).json({type:'saved', message:'post bookmarked', success:true});
         }

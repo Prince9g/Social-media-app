@@ -11,11 +11,13 @@ import { io } from "socket.io-client";
 import { setOnlineUsers } from "./redux/chatSlice";
 import { setSocket } from "./redux/socketSlice";
 import { useEffect } from "react";
+import { setLikeNotification } from "./redux/rtnSlice";
+import ProtectedRoutes from "./components/protectedRoutes";
 
 const BrowserRouter = createBrowserRouter([
   {
     path: "/",
-    element: <MainLayout />,
+    element: <ProtectedRoutes><MainLayout /></ProtectedRoutes>,
     children: [
       {
         path: "/",
@@ -63,6 +65,9 @@ function App() {
       socketio.on("getOnlineUsers", (onlineUsers) => {
         dispatch(setOnlineUsers(onlineUsers));
       });
+      socketio.on("notification", (notification)=> {
+        dispatch(setLikeNotification(notification));
+      })
       return () => {
         socketio.close();
         dispatch(setSocket(null));
